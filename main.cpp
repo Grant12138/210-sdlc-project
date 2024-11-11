@@ -16,15 +16,28 @@
 // Define a Vehicle struct
 struct Vehicle
 {
+    int id;
+    int speed;
+    int position;
 };
 
 #include <array>
 #include <list>
 #include <map>
 #include <iostream>
+#include <istream>
 using namespace std;
 
-map<string, array<list<Vehicle>, 3>> trafficMap {};
+void simulateStep(map<string, array<list<Vehicle>, 3>>& trafficMap);
+void initializeTrafficMap(map<string, array<list<Vehicle>, 3>>& trafficMap);
+
+int main()
+{
+    map<string, array<list<Vehicle>, 3>> trafficMap {};
+    initializeTrafficMap(trafficMap);
+
+    return 0;
+}
 
 void initializeTrafficMap(map<string, array<list<Vehicle>, 3>>& trafficMap)
 {
@@ -32,4 +45,28 @@ void initializeTrafficMap(map<string, array<list<Vehicle>, 3>>& trafficMap)
 
     for (const auto& intersection : intersections)
         trafficMap[intersection] = array<list<Vehicle>, 3> {};
+
+    for (int i = 0; i < 100; i++)
+    {
+
+    }
+}
+
+void simulateStep(map<string, array<list<Vehicle>, 3>>& trafficMap)
+{
+    for (auto& [intersection, lanes] : trafficMap)
+    {
+        for (auto& lane : lanes)
+        {
+            for (auto it = lane.begin(); it != lane.end() )
+            {
+                it->position += it->speed;
+            }
+
+            if (it->position > 100)
+                it = lane.erase(it);
+            else
+                it++;
+        }
+    }
 }
