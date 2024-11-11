@@ -25,7 +25,8 @@ struct Vehicle
 #include <list>
 #include <map>
 #include <iostream>
-#include <istream>
+#include <fstream>
+#include <ctime>
 using namespace std;
 
 void simulateStep(map<string, array<list<Vehicle>, 3>>& trafficMap);
@@ -63,6 +64,8 @@ int main()
 
 void initializeTrafficMap(map<string, array<list<Vehicle>, 3>>& trafficMap)
 {
+    srand(time(0));
+
     vector<string> intersections {"A", "B", "C"};
 
     for (const auto& intersection : intersections)
@@ -81,6 +84,8 @@ void initializeTrafficMap(map<string, array<list<Vehicle>, 3>>& trafficMap)
 
         trafficMap[ intersections[ rand() % 3 ] ][ rand() % 3 ].emplace_back(aVehicle);
     }
+
+    fin.close();
 }
 
 void simulateStep(map<string, array<list<Vehicle>, 3>>& trafficMap)
@@ -89,15 +94,15 @@ void simulateStep(map<string, array<list<Vehicle>, 3>>& trafficMap)
     {
         for (auto& lane : lanes)
         {
-            for (auto it = lane.begin(); it != lane.end() )
+            for (auto it = lane.begin(); it != lane.end(); )
             {
                 it->position += it->speed;
-            }
 
-            if (it->position > 100)
-                it = lane.erase(it);
-            else
-                it++;
+                if (it->position > 300)
+                    it = lane.erase(it);
+                else
+                    it++;
+            }
         }
     }
 }
