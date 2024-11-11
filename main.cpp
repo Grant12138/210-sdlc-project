@@ -36,6 +36,18 @@ int main()
     map<string, array<list<Vehicle>, 3>> trafficMap {};
     initializeTrafficMap(trafficMap);
 
+    simulateStep(trafficMap);
+
+    for (int step = 0; step < 25; step++)
+    {
+        cout << "Simulation Step: " << step << "\n";
+
+        for (const auto& [intersection, lanes] : trafficMap)
+        {
+            cout <<
+        }
+    }
+
     return 0;
 }
 
@@ -46,9 +58,18 @@ void initializeTrafficMap(map<string, array<list<Vehicle>, 3>>& trafficMap)
     for (const auto& intersection : intersections)
         trafficMap[intersection] = array<list<Vehicle>, 3> {};
 
+    ifstream fin("traffic.txt");
+
     for (int i = 0; i < 100; i++)
     {
+        Vehicle aVehicle;
+        if (fin >> aVehicle.id)
+        {
+            fin >> aVehicle.speed;
+            fin >> aVehicle.position;
+        }
 
+        trafficMap[ intersections[ rand() % 3 ] ][ rand() % 3 ].emplace_back(aVehicle);
     }
 }
 
